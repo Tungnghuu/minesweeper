@@ -9,8 +9,8 @@ using namespace std;
 #define COLS 16
 #define ROWS 16
 
-const int TILE_WIDTH = SCREEN_WIDTH / COLS;
-const int TILE_HEIGHT = SCREEN_HEIGHT / ROWS;
+const int TILE_WIDTH = 50;
+const int TILE_HEIGHT = 50;
 const int MINES = 40;
 
 int dx[] = {-1, -1, -1, 0, 0, 1, 1, 1};
@@ -45,7 +45,7 @@ int main () {
 
     cout << "Hello World" << endl;
     
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Raylib:: MineSweeper");
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Raylib:: Minesweeper");
     SetTargetFPS(60);
 
     GameStartUp();
@@ -115,6 +115,10 @@ void RenderTiles(){
 }
 
 void RenderTile(sTile tile){
+    Vector2 mousePos = GetMousePosition();
+    int hoverCol = mousePos.x / TILE_WIDTH;
+    int hoverRow = mousePos.y / TILE_HEIGHT;
+
     if(tile.isRevealed){
         if(tile.isMine) {
             DrawRectangle(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, RED);
@@ -128,15 +132,19 @@ void RenderTile(sTile tile){
         }
     } if (tile.isFlagged){
         DrawText(TextFormat("%c", 'F'), tile.x * TILE_WIDTH + 10, tile.y * TILE_HEIGHT + 6, TILE_HEIGHT - 4, RED );
+    }   
+    if (!tile.isRevealed && !tile.isFlagged && tile.x == hoverCol && tile.y == hoverRow) {
+        DrawRectangle(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, LIME);
     }
+    
     DrawRectangleLines(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, RAYWHITE);
 
 
 }
 
 void ResetTiles(){
-    for (int i = 0; i < COLS; i++){
-        for(int j = 0; j < ROWS; j++){
+    for (int i = 0; i < COLS; i++) {
+        for(int j = 0; j < ROWS; j++) {
             grid[i][j] = (sTile)
             {
                 .x = i,
@@ -150,8 +158,8 @@ void ResetTiles(){
     }
     int count = 0;
     while (count < MINES) {
-        int x = GetRandomValue(0, ROWS);
-        int y = GetRandomValue(0, COLS);
+        int x = GetRandomValue(0, COLS - 1);
+        int y = GetRandomValue(0, ROWS - 1);
         if (!(grid[x][y].isMine)) {
             grid[x][y].isMine = true;
             count++;
@@ -179,7 +187,7 @@ int CountNearbyMines(int x, int y){
 }
 
 bool isTileValid(int x, int y){
-    return x >= 0 && x < COLS && y > 0 && y < ROWS;
+    return x >= 0 && x < COLS && y >= 0 && y < ROWS;
 }
 void RevealTile(int x, int y){
     if(grid[x][y].isFlagged || grid[x][y].isRevealed) {
@@ -193,14 +201,20 @@ void RevealTile(int x, int y){
         for (int i = 0; i < 8; i++) {
             int nx = x + dx[i];
             int ny = y + dy[i];
-            if (nx >= 0 && ny >= 0 && nx < ROWS && ny < COLS && !grid[nx][ny].isMine && !grid[nx][ny].isRevealed) {
+            if (nx >= 0 && ny >= 0 && nx < COLS && ny < ROWS && !grid[nx][ny].isMine && !grid[nx][ny].isRevealed)  {
                 RevealTile(nx,ny);
             }
         }
     }
 
     if(grid[x][y].isMine){
-        //game over;
+        for (int i = 0 ;i < COLS; i++){
+            for (int j = 0; j < ROWS; j++){
+                if(grid[i][j].isMine && !grid[i][j].isFlagged){
+                    RevealTile(i,j);
+                }
+            }
+        }
     }
 
 }
