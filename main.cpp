@@ -6,12 +6,13 @@ using namespace std;
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 800
 
-#define COLS 16
-#define ROWS 16
+#define COLS 20
+#define ROWS 20
 
-const int TILE_WIDTH = 50;
-const int TILE_HEIGHT = 50;
-const int MINES = 40;
+const int TILE_WIDTH = 40;
+const int TILE_HEIGHT = 40;
+const int MINES = 60;
+
 
 int dx[] = {-1, -1, -1, 0, 0, 1, 1, 1};
 int dy[] = {-1, 0, 1, -1, 1, -1, 0, 1};
@@ -40,6 +41,7 @@ void GameUpdate();
 void GameRender();
 void GameShutDown();
 void GameReset();
+void RenderBoard();
 
 int main () {
 
@@ -55,7 +57,8 @@ int main () {
         GameUpdate();
 
         BeginDrawing();
-            ClearBackground(GREEN);
+            ClearBackground(Color{170, 215, 81, 50});
+
             
             GameRender();
 
@@ -87,14 +90,14 @@ void GameUpdate(){
         if (isTileValid(col,row)){
             ToggleFlag(col, row);
         }
-    }
+    } 
 
 }
 
 void GameRender(){
-
+    RenderBoard();
     RenderTiles();
-
+    
 }
 
 void GameShutDown(){
@@ -123,21 +126,28 @@ void RenderTile(sTile tile){
         if(tile.isMine) {
             DrawRectangle(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, RED);
         } else {
-            if (tile.nearbyMineCount > 0) {
-                DrawRectangle(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, LIGHTGRAY);
-                DrawText(TextFormat("%d", tile.nearbyMineCount), tile.x * TILE_WIDTH + 14, tile.y * TILE_HEIGHT + 5, TILE_HEIGHT - 4, DARKGRAY );
-            } if (tile.nearbyMineCount == 0) {
-                DrawRectangle(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, LIGHTGRAY);
+            if (((tile.x + tile.y) % 2 == 0)){
+                if (tile.nearbyMineCount > 0) {
+                    DrawRectangle(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, Color{229, 194, 159, 255});
+                    DrawText(TextFormat("%d", tile.nearbyMineCount), tile.x * TILE_WIDTH + 14, tile.y * TILE_HEIGHT + 5, TILE_HEIGHT - 4, DARKGRAY );
+                } if (tile.nearbyMineCount == 0) {
+                    DrawRectangle(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, Color{229, 194, 159, 255});
+                }
+            } else {
+                if (tile.nearbyMineCount > 0) {
+                    DrawRectangle(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, Color{215, 184, 153, 255});
+                    DrawText(TextFormat("%d", tile.nearbyMineCount), tile.x * TILE_WIDTH + 14, tile.y * TILE_HEIGHT + 5, TILE_HEIGHT - 4, DARKGRAY );
+                } if (tile.nearbyMineCount == 0) {
+                    DrawRectangle(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, Color{215, 184, 153, 255});
+                }
             }
         }
     } if (tile.isFlagged){
         DrawText(TextFormat("%c", 'F'), tile.x * TILE_WIDTH + 10, tile.y * TILE_HEIGHT + 6, TILE_HEIGHT - 4, RED );
     }   
-    if (!tile.isRevealed && !tile.isFlagged && tile.x == hoverCol && tile.y == hoverRow) {
-        DrawRectangle(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, LIME);
+    if (tile.x == hoverCol && tile.y == hoverRow) {
+        DrawRectangle(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, Color{255, 255, 255, 100});
     }
-    
-    DrawRectangleLines(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, RAYWHITE);
 
 
 }
@@ -213,8 +223,14 @@ void RevealTile(int x, int y){
                 if(grid[i][j].isMine && !grid[i][j].isFlagged){
                     RevealTile(i,j);
                 }
+                if(grid[i][j].isFlagged && !grid[i][j].isMine){
+                    grid[i][j].isFlagged = !grid[i][j].isFlagged;
+                    
+                }
             }
         }
+        // game over;
+    
     }
 
 }
@@ -222,7 +238,15 @@ void ToggleFlag(int x, int y){
     if (grid[x][y].isRevealed){
         return;
     }
-    
     grid[x][y].isFlagged = !grid[x][y].isFlagged;
 
+}
+
+void RenderBoard(){
+    for (int row = 0; row < ROWS; row++) {
+        for (int col = 0; col < COLS; col++) {
+            Color tileColor = ((row + col) % 2 == 0) ? Color{170, 215, 81, 255} : Color{162, 209, 73, 255};
+            DrawRectangle(col * TILE_WIDTH, row * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, tileColor);
+        }
+    }
 }
