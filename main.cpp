@@ -12,7 +12,7 @@ using namespace std;
 const int TILE_WIDTH = 40;
 const int TILE_HEIGHT = 40;
 const int MINES = 60;
-
+bool isGameOver = false;
 
 int dx[] = {-1, -1, -1, 0, 0, 1, 1, 1};
 int dy[] = {-1, 0, 1, -1, 1, -1, 0, 1};
@@ -29,6 +29,16 @@ typedef struct {
 
 sTile grid[COLS][ROWS];
 
+enum GameState{
+    MAIN_MENU,
+    PLAYING,
+    GAME_OVER
+};
+
+GameState gameState = MAIN_MENU;
+
+void RenderMainMenu();
+void RenderGameOver();
 void ToggleFlag(int x, int y);
 bool isTileValid(int x, int y);
 void RevealTile(int x, int y);
@@ -91,13 +101,36 @@ void GameUpdate(){
             ToggleFlag(col, row);
         }
     } 
+    if (gameState == MAIN_MENU) {
+        if (IsKeyPressed(KEY_ENTER)) {
+            gameState = PLAYING;
+            GameReset();
+        }
+        return;
+    }
+
+    if (gameState == GAME_OVER) {
+        if (IsKeyPressed(KEY_ENTER)) {
+            gameState = MAIN_MENU;
+        }
+        return;
+    }
+
+    if (isGameOver) {
+        gameState = GAME_OVER;
+        return;
+    }
 
 }
 
 void GameRender(){
+    if (gameState == MAIN_MENU) {
+        RenderMainMenu();
+        return;
+    }
     RenderBoard();
     RenderTiles();
-    
+    RenderGameOver();
 }
 
 void GameShutDown(){
@@ -218,18 +251,18 @@ void RevealTile(int x, int y){
     }
 
     if(grid[x][y].isMine){
+        isGameOver = true;
         for (int i = 0 ;i < COLS; i++){
             for (int j = 0; j < ROWS; j++){
                 if(grid[i][j].isMine && !grid[i][j].isFlagged){
-                    RevealTile(i,j);
+                    grid[i][j].isRevealed = true;
                 }
                 if(grid[i][j].isFlagged && !grid[i][j].isMine){
-                    grid[i][j].isFlagged = !grid[i][j].isFlagged;
+                    grid[i][j].isFlagged = false;
                     
                 }
             }
         }
-        // game over;
     
     }
 
@@ -249,4 +282,15 @@ void RenderBoard(){
             DrawRectangle(col * TILE_WIDTH, row * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, tileColor);
         }
     }
+}
+void RenderGameOver(){
+    if (isGameOver) {
+        DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, Color{0, 0, 0, 100});
+        DrawText("Game Over!", SCREEN_WIDTH / 2 - MeasureText("Game Over!", 40) / 2, SCREEN_HEIGHT / 2 - 20, 40, RED);
+    }
+}
+void RenderMainMenu() {
+    ClearBackground(RAYWHITE);
+    DrawText("Minesweeper", SCREEN_WIDTH / 2 - MeasureText("Minesweeper", 40) / 2, SCREEN_HEIGHT / 2 - 60, 40, DARKGRAY);
+    DrawText("Press ENTER to Start", SCREEN_WIDTH / 2 - MeasureText("Press ENTER to Start", 20) / 2, SCREEN_HEIGHT / 2, 20, DARKGRAY);
 }
