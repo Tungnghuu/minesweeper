@@ -90,9 +90,19 @@ void GameUpdate(){
     Vector2 mousePos = GetMousePosition();
     int col = mousePos.x / TILE_WIDTH;
     int row = mousePos.y / TILE_HEIGHT;
+
     if (gameState == MAIN_MENU) {
         if (IsKeyPressed(KEY_ENTER)) {
             gameState = PLAYING;
+            GameReset();
+        }
+        return;
+    }
+
+    if (gameState == GAME_OVER) {
+        if (IsKeyPressed(KEY_ENTER)) {
+            isGameOver = false;
+            gameState = MAIN_MENU;
             GameReset();
         }
         return;
@@ -103,27 +113,19 @@ void GameUpdate(){
             if (isTileValid(col, row)){
                 RevealTile(col, row);
             }
-        } if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)){
-            if (isTileValid(col,row)){
+        } 
+        if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)){
+            if (isTileValid(col, row)){
                 ToggleFlag(col, row);
             }
         } 
-        return;
     }
 
     if (isGameOver) {
         gameState = GAME_OVER;
-        return;
-    }
-
-    if (gameState == GAME_OVER) {
-        if (IsKeyPressed(KEY_ENTER)) {
-            gameState = MAIN_MENU;
-            isGameOver = false;
-        }
-        return;
     }
 }
+
 
 void GameRender(){
     if (gameState == MAIN_MENU) {
