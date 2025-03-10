@@ -67,8 +67,6 @@ int main () {
         GameUpdate();
 
         BeginDrawing();
-            ClearBackground(Color{170, 215, 81, 50});
-
             
             GameRender();
 
@@ -92,15 +90,6 @@ void GameUpdate(){
     Vector2 mousePos = GetMousePosition();
     int col = mousePos.x / TILE_WIDTH;
     int row = mousePos.y / TILE_HEIGHT;
-    if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
-        if (isTileValid(col, row)){
-            RevealTile(col, row);
-        }
-    } if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)){
-        if (isTileValid(col,row)){
-            ToggleFlag(col, row);
-        }
-    } 
     if (gameState == MAIN_MENU) {
         if (IsKeyPressed(KEY_ENTER)) {
             gameState = PLAYING;
@@ -109,10 +98,16 @@ void GameUpdate(){
         return;
     }
 
-    if (gameState == GAME_OVER) {
-        if (IsKeyPressed(KEY_ENTER)) {
-            gameState = MAIN_MENU;
-        }
+    if(gameState == PLAYING) { 
+        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+            if (isTileValid(col, row)){
+                RevealTile(col, row);
+            }
+        } if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)){
+            if (isTileValid(col,row)){
+                ToggleFlag(col, row);
+            }
+        } 
         return;
     }
 
@@ -121,6 +116,13 @@ void GameUpdate(){
         return;
     }
 
+    if (gameState == GAME_OVER) {
+        if (IsKeyPressed(KEY_ENTER)) {
+            gameState = MAIN_MENU;
+            isGameOver = false;
+        }
+        return;
+    }
 }
 
 void GameRender(){
@@ -199,6 +201,7 @@ void ResetTiles(){
             };
         }
     }
+
     int count = 0;
     while (count < MINES) {
         int x = GetRandomValue(0, COLS - 1);
@@ -208,6 +211,7 @@ void ResetTiles(){
             count++;
         }
     }
+
     for (int i = 0; i < COLS; i++){
         for(int j = 0; j < ROWS; j++){
             if (!grid[i][j].isMine){
@@ -240,7 +244,6 @@ void RevealTile(int x, int y){
     grid[x][y].isRevealed = true;
 
     if (grid[x][y].nearbyMineCount == 0){
-    
         for (int i = 0; i < 8; i++) {
             int nx = x + dx[i];
             int ny = y + dy[i];
@@ -287,6 +290,7 @@ void RenderGameOver(){
     if (isGameOver) {
         DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, Color{0, 0, 0, 100});
         DrawText("Game Over!", SCREEN_WIDTH / 2 - MeasureText("Game Over!", 40) / 2, SCREEN_HEIGHT / 2 - 20, 40, RED);
+        DrawText("Press ENTER to return to Main Menu", SCREEN_WIDTH / 2 - MeasureText("Press ENTER to return to Main Menu", 20) / 2, SCREEN_HEIGHT / 2 + 20, 20, RED);
     }
 }
 void RenderMainMenu() {
