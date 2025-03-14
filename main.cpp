@@ -13,6 +13,7 @@ const int TILE_WIDTH = 40;
 const int TILE_HEIGHT = 40;
 const int MINES = 60;
 bool isGameOver = false;
+Texture2D texture;
 
 int dx[] = {-1, -1, -1, 0, 0, 1, 1, 1};
 int dy[] = {-1, 0, 1, -1, 1, -1, 0, 1};
@@ -55,8 +56,9 @@ void RenderBoard();
 
 int main () {
 
-    cout << "Hello World" << endl;
-    
+    cout << "Hello World!" << endl;
+
+
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Raylib:: Minesweeper");
     SetTargetFPS(60);
 
@@ -66,8 +68,8 @@ int main () {
         
         GameUpdate();
 
-        BeginDrawing();
-            
+        BeginDrawing(); 
+
             GameRender();
 
         EndDrawing();
@@ -82,6 +84,11 @@ int main () {
 
 void GameStartUp(){
     InitAudioDevice();
+
+    Image flag = LoadImage("flag.png");
+    ImageResize(&flag, TILE_WIDTH, TILE_HEIGHT);
+    texture = LoadTextureFromImage(flag);
+    UnloadImage(flag);
 
     GameReset();
 }
@@ -180,7 +187,8 @@ void RenderTile(sTile tile){
             }
         }
     } if (tile.isFlagged){
-        DrawText(TextFormat("%c", 'F'), tile.x * TILE_WIDTH + 10, tile.y * TILE_HEIGHT + 6, TILE_HEIGHT - 4, RED );
+        // DrawText(TextFormat("%c", 'F'), tile.x * TILE_WIDTH + 10, tile.y * TILE_HEIGHT + 6, TILE_HEIGHT - 4, RED );
+        DrawTexture(texture, tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, WHITE);
     }   
     if (tile.x == hoverCol && tile.y == hoverRow) {
         DrawRectangle(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, Color{255, 255, 255, 100});
