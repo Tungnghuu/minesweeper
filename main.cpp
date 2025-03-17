@@ -13,7 +13,8 @@ const int TILE_WIDTH = 40;
 const int TILE_HEIGHT = 40;
 const int MINES = 60;
 bool isGameOver = false;
-Texture2D texture;
+Texture2D texture_flag;
+Texture2D texture_bomb;
 
 int dx[] = {-1, -1, -1, 0, 0, 1, 1, 1};
 int dy[] = {-1, 0, 1, -1, 1, -1, 0, 1};
@@ -87,8 +88,13 @@ void GameStartUp(){
 
     Image flag = LoadImage("flag.png");
     ImageResize(&flag, TILE_WIDTH, TILE_HEIGHT);
-    texture = LoadTextureFromImage(flag);
+    texture_flag = LoadTextureFromImage(flag);
     UnloadImage(flag);
+
+    Image bomb = LoadImage("bomb.png");
+    ImageResize(&bomb, TILE_WIDTH, TILE_HEIGHT);
+    texture_bomb = LoadTextureFromImage(bomb);
+    UnloadImage(bomb);
 
     GameReset();
 }
@@ -167,17 +173,26 @@ void RenderTile(sTile tile){
     int hoverRow = mousePos.y / TILE_HEIGHT;
 
     if(tile.isRevealed){
+
         if(tile.isMine) {
             DrawRectangle(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, RED);
-        } else {
+            DrawTexture(texture_bomb, tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, WHITE);
+        } 
+        
+        else {
+
             if (((tile.x + tile.y) % 2 == 0)){
+
                 if (tile.nearbyMineCount > 0) {
                     DrawRectangle(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, Color{229, 194, 159, 255});
                     DrawText(TextFormat("%d", tile.nearbyMineCount), tile.x * TILE_WIDTH + 14, tile.y * TILE_HEIGHT + 5, TILE_HEIGHT - 4, DARKGRAY );
                 } if (tile.nearbyMineCount == 0) {
                     DrawRectangle(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, Color{229, 194, 159, 255});
                 }
-            } else {
+            } 
+
+            else {
+
                 if (tile.nearbyMineCount > 0) {
                     DrawRectangle(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, Color{215, 184, 153, 255});
                     DrawText(TextFormat("%d", tile.nearbyMineCount), tile.x * TILE_WIDTH + 14, tile.y * TILE_HEIGHT + 5, TILE_HEIGHT - 4, DARKGRAY );
@@ -186,10 +201,12 @@ void RenderTile(sTile tile){
                 }
             }
         }
-    } if (tile.isFlagged){
-        // DrawText(TextFormat("%c", 'F'), tile.x * TILE_WIDTH + 10, tile.y * TILE_HEIGHT + 6, TILE_HEIGHT - 4, RED );
-        DrawTexture(texture, tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, WHITE);
-    }   
+    } 
+
+    if (tile.isFlagged){
+        DrawTexture(texture_flag, tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, WHITE);
+    }  
+
     if (tile.x == hoverCol && tile.y == hoverRow) {
         DrawRectangle(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, Color{255, 255, 255, 100});
     }
