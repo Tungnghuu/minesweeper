@@ -92,13 +92,13 @@ int main () {
 void GameStartUp(){
     InitAudioDevice();
 
-    Image flag = LoadImage("flag.png");
+    Image flag = LoadImage("images/flag.png");
 
     ImageResize(&flag, TILE_WIDTH - 10, TILE_HEIGHT - 10);
     texture_flag = LoadTextureFromImage(flag);
     UnloadImage(flag);
 
-    Image bomb = LoadImage("bomb.png");
+    Image bomb = LoadImage("images/bomb.png");
 
     ImageResize(&bomb, TILE_WIDTH, TILE_HEIGHT);
     texture_bomb = LoadTextureFromImage(bomb);
@@ -332,6 +332,9 @@ bool isTileValid(int x, int y){
 
 void RevealTile(int x, int y){
     if(grid[x][y].isFlagged || grid[x][y].isRevealed) {
+        if (grid[x][y].isFlagged && grid[x][y].nearbyMineCount == 0){
+            grid[x][y].isFlagged = false;
+        }
         return;
     }
 
