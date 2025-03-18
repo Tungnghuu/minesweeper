@@ -1,6 +1,9 @@
 # Minesweeper
+**Author:** Nguyen Huu Tung (Student ID: 24021663)
+
 This is my take on the classic **Minesweeper** game and also my first game project. Built using **Raylib**, it offers a clean interface and engaging gameplay.
 
+<img src="images/game_snapshot.png" alt="Game Screenshot" width="400">
 ![Game Screenshot](images/game_snapshot.png)
 
 ## Table of Contents
@@ -13,7 +16,7 @@ This is my take on the classic **Minesweeper** game and also my first game proje
   - [Using VSCode](#using-vscode)
   - [Using the Command Line](#using-the-command-line)
 - [Controls](#controls)
-- [Contributing](#contributing)
+- [Credits](#credits)
 - [License](#license)
 
 ## Features
@@ -23,6 +26,7 @@ This is my take on the classic **Minesweeper** game and also my first game proje
 
 ## Getting Started
 
+This project is developed as part of the **Advanced Programming Course (Course Code: 2425II_INT2215_7)** at **VNU-UET**.
 ### Prerequisites
 
 - **Raylib**: Download from [raylib.com](https://www.raylib.com)
@@ -35,11 +39,14 @@ This is my take on the classic **Minesweeper** game and also my first game proje
 If you don't have Git installed, download and install it from [git-scm.com](https://git-scm.com/).
 
 ### Step 2: Clone the Repository
-1. Open **Visual Studio Code**.
-2. Open the terminal in Visual Studio Code by pressing ``Ctrl+` `` (backtick) or by navigating to `View > Terminal`.
-3. Clone the repository using the following command:
+1. Open a terminal or command prompt.
+2. Run the following command:
     ```sh
     git clone https://github.com/Tungnghuu/minesweeper.git
+    ```
+3. Navigate to the cloned directory:
+    ```sh
+    cd minesweeper
     ```
 
 ### Step 3: Install Raylib
@@ -51,6 +58,7 @@ If you don't have Git installed, download and install it from [git-scm.com](http
 2. Click on `File > Open Folder...` and select the folder where you cloned your repository.
 
 ### Step 5: Build and Run the Project
+
 #### Using VSCode
 1. To build the project, press `Ctrl+Shift+B` and select either `build debug` or `build release`.
 2. To debug the project, press `F5` and select the `Debug` configuration.
@@ -58,20 +66,21 @@ If you don't have Git installed, download and install it from [git-scm.com](http
 
 #### Using the Command Line
 1. Open a terminal or command prompt.
-2. Navigate to the project directory:
-    ```sh
-    cd path/to/minesweeper
-    ```
-3. Build the project:
-    - For debug build:
+2. Build the project:
+    - If using `make` (ensure you have a `Makefile` set up):
+        - For debug build:
+            ```sh
+            make PLATFORM=PLATFORM_DESKTOP BUILD_MODE=DEBUG
+            ```
+        - For release build:
+            ```sh
+            make PLATFORM=PLATFORM_DESKTOP
+            ```
+    - If using `g++` manually:
         ```sh
-        make PLATFORM=PLATFORM_DESKTOP BUILD_MODE=DEBUG
+        g++ -o minesweeper src/*.cpp -lraylib -std=c++17
         ```
-    - For release build:
-        ```sh
-        make PLATFORM=PLATFORM_DESKTOP
-        ```
-4. Run the project:
+3. Run the project:
     - For debug build:
         ```sh
         ./minesweeper_debug
@@ -88,6 +97,12 @@ You should now be able to build, run, and debug your Minesweeper game project in
 
 - **Left Click**: Reveal a tile
 - **Right Click**: Flag or unflag a tile
+
+## Credits
+
+This project uses a Raylib starter template from [educ8s](https://github.com/educ8s/Raylib-CPP-Starter-Template-for-VSCODE).
+
+**University Project: Advanced Programming Course (Course Code: 2425II_INT2215_7) at VNU-UET**
 
 ## License
 
