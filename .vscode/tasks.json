@@ -15,25 +15,25 @@
                 "command": "C:/raylib/w64devkit/bin/mingw32-make.exe",
                 "args": [
                     "RAYLIB_PATH=C:/raylib/raylib",
-                    "PROJECT_NAME=${fileBasenameNoExtension}",
-                    "OBJS=*.cpp",
+                    "PROJECT_NAME=minesweeper_debug",
+                    "OBJS=src/main.cpp src/game.cpp",
                     "BUILD_MODE=DEBUG"
                 ]
             },
             "osx": {
                 "args": [
-                    "PROJECT_NAME=${fileBasenameNoExtension}",
-                    "OBJS=*.cpp",
+                    "PROJECT_NAME=minesweeper_debug",
+                    "OBJS=src/main.cpp src/game.cpp",
                     "BUILD_MODE=DEBUG"
                 ]
             },
             "linux": {
                 "args": [
-                    "PROJECT_NAME=${fileBasenameNoExtension}",
+                    "PROJECT_NAME=minesweeper_debug",
                     "DESTDIR=/home/linuxbrew/.linuxbrew",
                     "RAYLIB_LIBTYPE=SHARED",
                     "EXAMPLE_RUNTIME_PATH=/home/linuxbrew/.linuxbrew/lib",
-                    "OBJS=*.cpp",
+                    "OBJS=src/main.cpp src/game.cpp",
                     "BUILD_MODE=DEBUG"
                 ]
             },
@@ -56,23 +56,23 @@
                 "command": "C:/raylib/w64devkit/bin/mingw32-make.exe",
                 "args": [
                     "RAYLIB_PATH=C:/raylib/raylib",
-                    "PROJECT_NAME=${fileBasenameNoExtension}",
-                    "OBJS=*.cpp"
+                    "PROJECT_NAME=minesweeper",
+                    "OBJS=src/main.cpp src/game.cpp"
                 ]
             },
             "osx": {
                 "args": [
-                    "PROJECT_NAME=${fileBasenameNoExtension}",
-                    "OBJS=*.cpp"
+                    "PROJECT_NAME=minesweeper",
+                    "OBJS=src/main.cpp src/game.cpp"
                 ]
             },
             "linux": {
                 "args": [
-                    "PROJECT_NAME=${fileBasenameNoExtension}",
+                    "PROJECT_NAME=minesweeper",
                     "DESTDIR=/home/linuxbrew/.linuxbrew",
                     "RAYLIB_LIBTYPE=SHARED",
                     "EXAMPLE_RUNTIME_PATH=/home/linuxbrew/.linuxbrew/lib",
-                    "OBJS=*.cpp"
+                    "OBJS=src/main.cpp src/game.cpp"
                 ]
             },
             "problemMatcher": [
