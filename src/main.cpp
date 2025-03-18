@@ -19,7 +19,6 @@ int main () {
 
     cout << "Hello World!" << endl;
 
-
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Raylib:: Minesweeper");
     SetTargetFPS(60);
 
