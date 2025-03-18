@@ -15,7 +15,7 @@
                 "command": "C:/raylib/w64devkit/bin/mingw32-make.exe",
                 "args": [
                     "RAYLIB_PATH=C:/raylib/raylib",
-                    "PROJECT_NAME=minesweeper_debug",
+                    "PROJECT_NAME=minesweeper",
                     "OBJS=src/main.cpp src/game.cpp",
                     "BUILD_MODE=DEBUG"
                 ]
