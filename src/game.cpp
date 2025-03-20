@@ -12,8 +12,6 @@ void GameStartUp(){
     ImageResize(&bomb, TILE_WIDTH, TILE_HEIGHT);
     texture_bomb = LoadTextureFromImage(bomb);
     UnloadImage(bomb);
-
-    GameReset();
 }
 
 void GameUpdate(){ 
@@ -56,6 +54,18 @@ void GameUpdate(){
         gameState = GAME_OVER;
     }
 
+    if (CheckWin()) {
+        gameState = WON;
+    }
+
+    if (gameState == WON) {
+        RenderWin();
+        if (GetKeyPressed() != 0) {
+            gameState = MAIN_MENU;
+            GameReset();
+        }
+        return;
+    }
 }
 
 void GameRender(){
@@ -67,7 +77,10 @@ void GameRender(){
     RenderBoard();
     RenderTiles();
     RenderGameOver();
-
+    if (gameState == WON) {
+        RenderWin();
+        return;
+    }
 }
 
 void GameShutDown(){
@@ -78,4 +91,14 @@ void GameShutDown(){
 void GameReset(){
     ResetTiles();
     
+}
+bool CheckWin() {
+    for (int i = 0; i < COLS; i++) {
+        for (int j = 0; j < ROWS; j++) {
+            if (!grid[i][j].isMine && !grid[i][j].isRevealed) {
+                return false;
+            }
+        }
+    }
+    return true;
 }

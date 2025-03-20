@@ -133,13 +133,15 @@ void RenderGameOver(){
         );
         DrawText("Press Any Key to return to Main Menu",
             SCREEN_WIDTH / 2 - MeasureText("Press Any Key to return to Main Menu", 20) / 2,
-            SCREEN_HEIGHT / 2 + 20, 20, RED
+            SCREEN_HEIGHT / 2 + 20, 
+            20, 
+            RED
         );
     }
 }
 
 void RenderMainMenu() {
-    ClearBackground(RAYWHITE);
+    ClearBackground(LIGHT_GREEN);
     DrawText("Minesweeper", 
         SCREEN_WIDTH / 2 - MeasureText("Minesweeper", 40) / 2, 
         SCREEN_HEIGHT / 2 - 60, 
@@ -151,5 +153,19 @@ void RenderMainMenu() {
         SCREEN_HEIGHT / 2, 
         20, 
         DARKGRAY
+    );
+}
+void RenderWin()
+{
+    DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, Color{0, 0, 0, 100});
+    DrawText("You Win!",
+        SCREEN_WIDTH / 2 - MeasureText("You Win!", 40) / 2,
+        SCREEN_HEIGHT / 2 - 20,
+        40,
+        GREEN
+    );
+    DrawText("Press Any Key to return to Main Menu",
+        SCREEN_WIDTH / 2 - MeasureText("Press Any Key to return to Main Menu", 20) / 2,
+        SCREEN_HEIGHT / 2 + 20, 20, GREEN
     );
 }
