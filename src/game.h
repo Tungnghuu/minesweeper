@@ -16,7 +16,7 @@
 
 const int TILE_WIDTH = 40;
 const int TILE_HEIGHT = 40;
-const int MINES = 60;
+const int MINES = 80;
 
 typedef struct {
     int x;
@@ -37,7 +37,8 @@ extern int dy[];
 enum GameState {
     MAIN_MENU,
     PLAYING,
-    GAME_OVER
+    GAME_OVER,
+    WON
 };
 extern GameState gameState;
 
@@ -56,5 +57,7 @@ void GameRender();
 void GameShutDown();
 void GameReset();
 void RenderBoard();
+bool CheckWin();
+void RenderWin();
 
-#endif // GAME_H
+#endif

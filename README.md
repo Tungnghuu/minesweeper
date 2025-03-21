@@ -1,10 +1,10 @@
 # Minesweeper
+
 **Author:** Nguyen Huu Tung (Student ID: 24021663)
 
-This is my take on the classic **Minesweeper** game and also my first game project. Built using **Raylib**, it offers a clean interface and engaging gameplay.
+This is my take on the classic **Minesweeper** game and my first game project. Built using **Raylib**, it offers a clean interface and engaging gameplay.
 
 <img src="images/game_snapshot.png" alt="Game Screenshot" width="400">
-![Game Screenshot](images/game_snapshot.png)
 
 ## Table of Contents
 
