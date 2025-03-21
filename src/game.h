@@ -16,7 +16,7 @@
 
 const int TILE_WIDTH = 40;
 const int TILE_HEIGHT = 40;
-const int MINES = 1;
+const int MINES = 80;
 
 typedef struct {
     int x;
