@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <raylib.h>
+#include <string>
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 800
@@ -42,6 +43,7 @@ enum GameState {
 };
 extern GameState gameState;
 
+void LoadImage();
 void RenderMainMenu();
 void RenderGameOver();
 void ToggleFlag(int x, int y);

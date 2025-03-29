@@ -3,6 +3,10 @@
 void GameStartUp(){
     InitAudioDevice();
 
+    LoadImage();
+}
+
+void LoadImage(){
     Image flag = LoadImage("images/flag.png");
     ImageResize(&flag, TILE_WIDTH - 10, TILE_HEIGHT - 10);
     texture_flag = LoadTextureFromImage(flag);

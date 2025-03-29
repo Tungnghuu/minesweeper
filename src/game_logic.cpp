@@ -3,8 +3,7 @@
 void ResetTiles(){
     for (int i = 0; i < COLS; i++) {
         for(int j = 0; j < ROWS; j++) {
-            grid[i][j] = (sTile)
-            {
+            grid[i][j] = (sTile){
                 .x = i,
                 .y = j,
                 .isMine = false,
