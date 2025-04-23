@@ -1,11 +1,9 @@
 #include "game.h"
 
-
 void RenderTiles(){
     for (int i = 0; i < COLS; i++){
         for (int j = 0; j < ROWS; j++){
             RenderTile(grid[i][j]);
-
         }
     }
 }
@@ -122,7 +120,7 @@ void RenderBoard(){
     }
 }
 
-void RenderGameOver(){
+void RenderGameOver() {
     if (isGameOver) {
         DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, Color{0, 0, 0, 100});
         DrawText("Game Over!", 
@@ -155,8 +153,7 @@ void RenderMainMenu() {
         DARKGRAY
     );
 }
-void RenderWin()
-{
+void RenderWin() {
     DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, Color{0, 0, 0, 100});
     DrawText("You Win!",
         SCREEN_WIDTH / 2 - MeasureText("You Win!", 40) / 2,
@@ -167,5 +164,41 @@ void RenderWin()
     DrawText("Press Any Key to return to Main Menu",
         SCREEN_WIDTH / 2 - MeasureText("Press Any Key to return to Main Menu", 20) / 2,
         SCREEN_HEIGHT / 2 + 20, 20, GREEN
+    );
+}
+
+void RenderDifficultyMenu(int x, int y) {
+    ClearBackground(LIGHT_GREEN);
+
+    const char* options[] = {"Easy", "Medium", "Hard"};
+    int optionCount = 3;
+    int fontSize = 30;
+    int spacing = 50;
+
+    for (int i = 0; i < optionCount; i++) {
+        int textWidth = MeasureText(options[i], fontSize);
+        int textX = SCREEN_WIDTH / 2 - textWidth / 2;
+        int textY = SCREEN_HEIGHT / 2 - (optionCount * spacing) / 2 + i * spacing;
+
+        bool isHovered = x >= textX && x <= textX + textWidth &&
+                         y >= textY && y <= textY + fontSize;
+
+        Color textColor = (isHovered) ? YELLOW : DARKGRAY;
+
+        DrawText(
+            options[i],
+            textX,
+            textY,
+            fontSize,
+            textColor
+        );
+    }
+
+    DrawText(
+        "Select Difficulty",
+        SCREEN_WIDTH / 2 - MeasureText("Select Difficulty", 40) / 2,
+        SCREEN_HEIGHT / 2 - (optionCount * spacing) / 2 - 60,
+        40,
+        DARKGRAY
     );
 }

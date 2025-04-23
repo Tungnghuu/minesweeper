@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <raylib.h>
+#include <string>
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 800
@@ -16,7 +17,7 @@
 
 const int TILE_WIDTH = 40;
 const int TILE_HEIGHT = 40;
-const int MINES = 80;
+const int MINES = 60;
 
 typedef struct {
     int x;
@@ -25,6 +26,7 @@ typedef struct {
     bool isRevealed;
     bool isFlagged;
     int nearbyMineCount;
+    bool first_reveal;
 } sTile;
 
 extern sTile grid[COLS][ROWS];
@@ -36,12 +38,19 @@ extern int dy[];
 
 enum GameState {
     MAIN_MENU,
+    CHOOSING_DIFFICULTY,
+    FIRST_REVEAL,
     PLAYING,
     GAME_OVER,
     WON
 };
+
 extern GameState gameState;
 
+void RenderDifficultyMenu(int x, int y);
+void firstRevealSurround(int x, int y);
+void placeMine();
+void LoadImage();
 void RenderMainMenu();
 void RenderGameOver();
 void ToggleFlag(int x, int y);
