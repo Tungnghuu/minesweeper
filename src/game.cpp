@@ -23,24 +23,43 @@ void GameUpdate(){
     int col = mousePos.x / TILE_WIDTH;
     int row = mousePos.y / TILE_HEIGHT;
 
-    if (gameState == MAIN_MENU) {
+    // MAIN MENU
+
+    if (gameState == MAIN_MENU) {                       
         if (GetKeyPressed() != 0) {
-            gameState = PLAYING;
-            GameReset();
+            gameState = /*FIRST_REVEAL*/ CHOOSING_DIFFICULTY;
+            
         }
         return;
     }
 
-    if (gameState == GAME_OVER) {
-        if (GetKeyPressed() != 0) {
-            isGameOver = false;
-            gameState = MAIN_MENU;
-            GameReset();
-        }
+    if (gameState == CHOOSING_DIFFICULTY){
+        GameReset();
+        gameState = FIRST_REVEAL;
         return;
     }
 
+    // FIRST REVEAL
 
+    if (gameState == FIRST_REVEAL){                     
+        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+            if (isTileValid(col, row)){
+                firstRevealSurround(col,row);
+                placeMine();
+                RevealTile(col,row);
+                gameState = PLAYING;
+            }
+        } 
+        if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)){
+            if (isTileValid(col, row)){
+                ToggleFlag(col, row);
+            }
+        } 
+        return;
+    }
+
+    // START PLAYING
+    
     if(gameState == PLAYING) { 
         if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
             if (isTileValid(col, row)){
@@ -51,25 +70,37 @@ void GameUpdate(){
             if (isTileValid(col, row)){
                 ToggleFlag(col, row);
             }
-        } 
-    }
+        }
 
-    if (isGameOver) {
-        gameState = GAME_OVER;
-    }
+        if (CheckWin()) {
+            gameState = WON;
+        }
 
-    if (CheckWin()) {
-        gameState = WON;
-    }
-
-    if (gameState == WON) {
-        RenderWin();
-        if (GetKeyPressed() != 0) {
-            gameState = MAIN_MENU;
-            GameReset();
+        if (isGameOver) {
+            gameState = GAME_OVER;
         }
         return;
     }
+
+    // GAME OVER
+
+    if (gameState == GAME_OVER) {
+        if (GetKeyPressed() != 0) {
+            isGameOver = false;
+            gameState = MAIN_MENU;
+        }
+        return;
+    }
+
+    // WIN STATE
+
+    if (gameState == WON) {
+        if (GetKeyPressed() != 0) {
+            gameState = MAIN_MENU;
+        }
+        return;
+    }
+    return;
 }
 
 void GameRender(){
@@ -78,13 +109,19 @@ void GameRender(){
         RenderMainMenu();
         return;
     }
+    if(gameState == CHOOSING_DIFFICULTY){
+        Vector2 mousePos = GetMousePosition();
+        RenderDifficultyMenu(mousePos.x,mousePos.y);
+        return;
+    }
     RenderBoard();
     RenderTiles();
     RenderGameOver();
-    if (gameState == WON) {
+    if(gameState == WON){
         RenderWin();
         return;
     }
+    return;
 }
 
 void GameShutDown(){
@@ -95,14 +132,4 @@ void GameShutDown(){
 void GameReset(){
     ResetTiles();
     
-}
-bool CheckWin() {
-    for (int i = 0; i < COLS; i++) {
-        for (int j = 0; j < ROWS; j++) {
-            if (!grid[i][j].isMine && !grid[i][j].isRevealed) {
-                return false;
-            }
-        }
-    }
-    return true;
 }
