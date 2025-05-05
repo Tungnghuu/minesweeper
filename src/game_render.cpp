@@ -106,7 +106,6 @@ void RenderTile(sTile tile){
 
 }
 
-
 void RenderBoard(){
     for (int row = 0; row < ROWS; row++) {
         for (int col = 0; col < COLS; col++) {
@@ -120,8 +119,8 @@ void RenderBoard(){
     }
 }
 
-void RenderGameOver() {
-    if (isGameOver) {
+void RenderGameOver(){
+    if(isGameOver){
         DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, Color{0, 0, 0, 100});
         DrawText("Game Over!", 
             SCREEN_WIDTH / 2 - MeasureText("Game Over!", 40) / 2,
@@ -138,7 +137,7 @@ void RenderGameOver() {
     }
 }
 
-void RenderMainMenu() {
+void RenderMainMenu(){
     ClearBackground(LIGHT_GREEN);
     DrawText("Minesweeper", 
         SCREEN_WIDTH / 2 - MeasureText("Minesweeper", 40) / 2, 
@@ -153,7 +152,8 @@ void RenderMainMenu() {
         DARKGRAY
     );
 }
-void RenderWin() {
+
+void RenderWin(){
     DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, Color{0, 0, 0, 100});
     DrawText("You Win!",
         SCREEN_WIDTH / 2 - MeasureText("You Win!", 40) / 2,
@@ -167,7 +167,7 @@ void RenderWin() {
     );
 }
 
-void RenderDifficultyMenu(int x, int y) {
+void RenderDifficultyMenu(int x, int y){
     ClearBackground(LIGHT_GREEN);
 
     const char* options[] = {"Easy", "Medium", "Hard"};
@@ -201,4 +201,4 @@ void RenderDifficultyMenu(int x, int y) {
         40,
         DARKGRAY
     );
-}
+} 

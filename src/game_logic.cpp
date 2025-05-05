@@ -23,7 +23,7 @@ void firstRevealSurround(int x, int y){
     for (int i = 0; i < 8; i++) {
         int nx = x + dx[i];
         int ny = y + dy[i];
-        if (nx >= 0 && ny >= 0 && nx < ROWS && ny < COLS) {
+        if (nx >= 0 && ny >= 0 && nx < COLS && ny < ROWS) {
             grid[nx][ny].first_reveal = true;
         }
     }
@@ -117,7 +117,7 @@ void ToggleFlag(int x, int y){
     return;
 }
 
-bool CheckWin() {
+bool CheckWin(){
     for (int i = 0; i < COLS; i++) {
         for (int j = 0; j < ROWS; j++) {
             if (!grid[i][j].isMine && !grid[i][j].isRevealed) {
@@ -126,4 +126,39 @@ bool CheckWin() {
         }
     }
     return true;
+}
+
+void SetDifficulty(int difficulty){
+    switch (difficulty){
+        case 0: // Easy
+            SCREEN_WIDTH = 400;
+            SCREEN_HEIGHT = 400;
+            TILE_WIDTH = 40;
+            TILE_HEIGHT = 40;
+            COLS = 10;
+            ROWS = 10;
+            MINES = 10;
+            break;
+        case 1: // Medium
+            SCREEN_WIDTH = 600;
+            SCREEN_HEIGHT = 600;
+            TILE_WIDTH = 30;
+            TILE_HEIGHT = 30;
+            COLS = 20;
+            ROWS = 20;
+            MINES = 40;
+            break;
+        case 2: // Hard
+            SCREEN_WIDTH = 900;
+            SCREEN_HEIGHT = 900;
+            TILE_WIDTH = 30;
+            TILE_HEIGHT = 30;
+            COLS = 30;
+            ROWS = 30;
+            MINES = 150;
+            break;
+    }
+
+    ResizeGrid();
+    GameReset(); 
 }

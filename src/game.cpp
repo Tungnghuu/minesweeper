@@ -2,8 +2,6 @@
 
 void GameStartUp(){
     InitAudioDevice();
-
-    LoadImage();
 }
 
 void LoadImage(){
@@ -25,17 +23,40 @@ void GameUpdate(){
 
     // MAIN MENU
 
-    if (gameState == MAIN_MENU) {                       
-        if (GetKeyPressed() != 0) {
+    if (gameState == MAIN_MENU){
+        SCREEN_HEIGHT = 800;
+        SCREEN_WIDTH = 800;
+        SetWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+        if (GetKeyPressed() != 0){
             gameState = /*FIRST_REVEAL*/ CHOOSING_DIFFICULTY;
-            
         }
         return;
     }
 
-    if (gameState == CHOOSING_DIFFICULTY){
-        GameReset();
-        gameState = FIRST_REVEAL;
+    //CHOOSING DIFFICULTY
+
+    if (gameState == CHOOSING_DIFFICULTY) {
+        const char* options[] = {"Easy", "Medium", "Hard"};
+        int optionCount = 3;
+        int fontSize = 30;
+        int spacing = 50;
+    
+        for (int i = 0; i < optionCount; i++) {
+            int textWidth = MeasureText(options[i], fontSize);
+            int textX = SCREEN_WIDTH / 2 - textWidth / 2;
+            int textY = SCREEN_HEIGHT / 2 - (optionCount * spacing) / 2 + i * spacing;
+    
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) &&
+                mousePos.x >= textX && mousePos.x <= textX + textWidth &&
+                mousePos.y >= textY && mousePos.y <= textY + fontSize) {
+                
+                SetDifficulty(i);
+                gameState = FIRST_REVEAL;
+                SetWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+                LoadImage();
+                break;
+            }
+        }
         return;
     }
 
@@ -104,7 +125,6 @@ void GameUpdate(){
 }
 
 void GameRender(){
-
     if (gameState == MAIN_MENU) {
         RenderMainMenu();
         return;
@@ -126,10 +146,21 @@ void GameRender(){
 
 void GameShutDown(){
     CloseAudioDevice();
-
 }
 
 void GameReset(){
     ResetTiles();
-    
+}
+
+void ResizeGrid(){
+    grid.resize(ROWS);
+    for (int i = 0; i < ROWS; i++) {
+        grid[i].resize(COLS);
+    }
+
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            grid[i][j] = {i, j, false, false, false, -1, false};
+        }
+    }
 }
