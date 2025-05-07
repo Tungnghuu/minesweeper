@@ -1,4 +1,34 @@
+# Ignore compiled binaries
 *.exe
-*.dsym
-main
-.vscode/
+*.dll
+*.so
+*.dylib
+*.out
+
+# Ignore build artifacts
+*.o
+*.obj
+*.log
+*.tmp
+
+# Ignore editor/IDE-specific files
+.idea/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+
+# Ignore user-specific files
+*.user
+*.swp
+
+# Ignore backup files
+*.bak
+*.old
+*.orig
+
+# Ignore system files
+Thumbs.db
+.DS_Store
+
+# Ignore generated files
+data/highscores.txt

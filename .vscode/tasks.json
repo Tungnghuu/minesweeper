@@ -16,14 +16,14 @@
                 "args": [
                     "RAYLIB_PATH=C:/raylib/raylib",
                     "PROJECT_NAME=minesweeper",
-                    "OBJS=src/main.cpp src/game.cpp src/game_render.cpp src/game_logic.cpp",
+                    "OBJS=src/main.cpp src/game_file.cpp src/game.cpp src/game_render.cpp src/game_logic.cpp",
                     "BUILD_MODE=DEBUG"
                 ]
             },
             "osx": {
                 "args": [
                     "PROJECT_NAME=minesweeper_debug",
-                    "OBJS=src/main.cpp src/game.cpp src/game_render.cpp src/game_logic.cpp",
+                    "OBJS=src/main.cpp src/game_file.cpp src/game.cpp src/game_render.cpp src/game_logic.cpp",
                     "BUILD_MODE=DEBUG"
                 ]
             },
@@ -33,7 +33,7 @@
                     "DESTDIR=/home/linuxbrew/.linuxbrew",
                     "RAYLIB_LIBTYPE=SHARED",
                     "EXAMPLE_RUNTIME_PATH=/home/linuxbrew/.linuxbrew/lib",
-                    "OBJS=src/main.cpp src/game.cpp src/game_render.cpp src/game_logic.cpp",
+                    "OBJS=src/main.cpp src/game_file.cpp src/game.cpp src/game_render.cpp src/game_logic.cpp",
                     "BUILD_MODE=DEBUG"
                 ]
             },
@@ -57,13 +57,13 @@
                 "args": [
                     "RAYLIB_PATH=C:/raylib/raylib",
                     "PROJECT_NAME=minesweeper",
-                    "OBJS=src/main.cpp src/game.cpp src/game_render.cpp src/game_logic.cpp"
+                    "OBJS=src/main.cpp src/game_file.cpp src/game.cpp src/game_render.cpp src/game_logic.cpp"
                 ]
             },
             "osx": {
                 "args": [
                     "PROJECT_NAME=minesweeper",
-                    "OBJS=src/main.cpp src/game.cpp src/game_render.cpp src/game_logic.cpp"
+                    "OBJS=src/main.cpp src/game_file.cpp src/game.cpp src/game_render.cpp src/game_logic.cpp"
                 ]
             },
             "linux": {
@@ -72,7 +72,7 @@
                     "DESTDIR=/home/linuxbrew/.linuxbrew",
                     "RAYLIB_LIBTYPE=SHARED",
                     "EXAMPLE_RUNTIME_PATH=/home/linuxbrew/.linuxbrew/lib",
-                    "OBJS=src/main.cpp src/game.cpp src/game_render.cpp src/game_logic.cpp"
+                    "OBJS=src/main.cpp src/game_file.cpp src/game.cpp src/game_render.cpp src/game_logic.cpp"
                 ]
             },
             "problemMatcher": [
