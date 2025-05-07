@@ -31,6 +31,7 @@ bool isGameOver = false;
 
 int main(){
     InitWindow(800, 800, "Raylib:: Minesweeper");
+    SetExitKey(0);
     SetTargetFPS(60);
     GameStartUp();
 
