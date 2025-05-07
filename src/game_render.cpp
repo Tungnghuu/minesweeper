@@ -180,8 +180,7 @@ void RenderDifficultyMenu(int x, int y){
         int textX = SCREEN_WIDTH / 2 - textWidth / 2;
         int textY = SCREEN_HEIGHT / 2 - (optionCount * spacing) / 2 + i * spacing;
 
-        bool isHovered = x >= textX && x <= textX + textWidth &&
-                         y >= textY && y <= textY + fontSize;
+        bool isHovered = x >= textX && x <= textX + textWidth && y >= textY && y <= textY + fontSize;
 
         Color textColor = (isHovered) ? YELLOW : DARKGRAY;
 
@@ -201,4 +200,73 @@ void RenderDifficultyMenu(int x, int y){
         40,
         DARKGRAY
     );
-} 
+}
+
+void RenderUI() {
+    countFlag();
+    char flagText[50];
+    sprintf(flagText,": %d", flagCount);
+
+    char timerText[50];
+    sprintf(timerText, "Time: %03d", elapsedTime);
+
+    char highScoreText[50];
+    if (currentDifficulty == 0) {
+        if (highScoreEasy == INT_MAX) {
+            sprintf(highScoreText, "High Score: --");
+        } else {
+            sprintf(highScoreText, "High Score: %03d", highScoreEasy);
+        }
+    } else if (currentDifficulty == 1) {
+        if (highScoreMedium == INT_MAX) {
+            sprintf(highScoreText, "High Score: --");
+        } else {
+            sprintf(highScoreText, "High Score: %03d", highScoreMedium);
+        }
+    } else if (currentDifficulty == 2) {
+        if (highScoreHard == INT_MAX) {
+            sprintf(highScoreText, "High Score: --");
+        } else {
+            sprintf(highScoreText, "High Score: %03d", highScoreHard);
+        }
+    }
+
+    DrawRectangle(
+        0,
+        SCREEN_HEIGHT,
+        SCREEN_WIDTH,
+        50,
+        DARK_YELLOW
+    );
+    
+    DrawTexture(
+        texture_flag,
+        20,
+        SCREEN_HEIGHT + 10,
+        WHITE
+    );
+    
+    DrawText(
+        flagText,
+        60,
+        SCREEN_HEIGHT + 15,
+        20,
+        RAYWHITE
+    );
+
+    DrawText(
+        timerText,
+        SCREEN_WIDTH - 100,
+        SCREEN_HEIGHT + 15,
+        20,
+        RAYWHITE
+    );
+
+    DrawText(
+        highScoreText,
+        SCREEN_WIDTH / 2 - MeasureText(highScoreText, 20) / 2,
+        SCREEN_HEIGHT + 15,
+        20,
+        RAYWHITE
+    );
+}

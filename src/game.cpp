@@ -1,7 +1,12 @@
 #include "game.h"
 
+int highScoreEasy = INT_MAX;
+int highScoreMedium = INT_MAX;
+int highScoreHard = INT_MAX;
+
 void GameStartUp(){
     InitAudioDevice();
+    LoadHighScores();
 }
 
 void LoadImage(){
@@ -21,19 +26,17 @@ void GameUpdate(){
     int col = mousePos.x / TILE_WIDTH;
     int row = mousePos.y / TILE_HEIGHT;
 
-    // MAIN MENU
-
     if (gameState == MAIN_MENU){
+        startTime = 0;
+        elapsedTime = 0;
         SCREEN_HEIGHT = 800;
         SCREEN_WIDTH = 800;
         SetWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
         if (GetKeyPressed() != 0){
-            gameState = /*FIRST_REVEAL*/ CHOOSING_DIFFICULTY;
+            gameState = CHOOSING_DIFFICULTY;
         }
         return;
     }
-
-    //CHOOSING DIFFICULTY
 
     if (gameState == CHOOSING_DIFFICULTY) {
         const char* options[] = {"Easy", "Medium", "Hard"};
@@ -48,19 +51,18 @@ void GameUpdate(){
     
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) &&
                 mousePos.x >= textX && mousePos.x <= textX + textWidth &&
-                mousePos.y >= textY && mousePos.y <= textY + fontSize) {
+                mousePos.y >= textY && mousePos.y <= textY + fontSize){
                 
                 SetDifficulty(i);
+                currentDifficulty = i;
                 gameState = FIRST_REVEAL;
-                SetWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+                SetWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT + 50);
                 LoadImage();
                 break;
             }
         }
         return;
     }
-
-    // FIRST REVEAL
 
     if (gameState == FIRST_REVEAL){                     
         if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
@@ -79,9 +81,15 @@ void GameUpdate(){
         return;
     }
 
-    // START PLAYING
-    
     if(gameState == PLAYING) { 
+        if(startTime == 0){
+            startTime = GetTime();
+        }
+        elapsedTime = (int)(GetTime() - startTime);
+        if (elapsedTime > 999) {
+            elapsedTime = 999;
+        }
+        
         if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
             if (isTileValid(col, row)){
                 RevealTile(col, row);
@@ -103,8 +111,6 @@ void GameUpdate(){
         return;
     }
 
-    // GAME OVER
-
     if (gameState == GAME_OVER) {
         if (GetKeyPressed() != 0) {
             isGameOver = false;
@@ -113,15 +119,23 @@ void GameUpdate(){
         return;
     }
 
-    // WIN STATE
-
-    if (gameState == WON) {
+    if (gameState == WON){
+        if (currentDifficulty == 0 && elapsedTime < highScoreEasy) {
+            highScoreEasy = elapsedTime;
+            SaveHighScores();
+        } else if (currentDifficulty == 1 && elapsedTime < highScoreMedium) {
+            highScoreMedium = elapsedTime;
+            SaveHighScores();
+        } else if (currentDifficulty == 2 && elapsedTime < highScoreHard) {
+            highScoreHard = elapsedTime;
+            SaveHighScores();
+        }
+    
         if (GetKeyPressed() != 0) {
             gameState = MAIN_MENU;
         }
         return;
     }
-    return;
 }
 
 void GameRender(){
@@ -129,19 +143,22 @@ void GameRender(){
         RenderMainMenu();
         return;
     }
+
     if(gameState == CHOOSING_DIFFICULTY){
         Vector2 mousePos = GetMousePosition();
         RenderDifficultyMenu(mousePos.x,mousePos.y);
         return;
     }
+
     RenderBoard();
     RenderTiles();
+    RenderUI();
     RenderGameOver();
+
     if(gameState == WON){
         RenderWin();
         return;
     }
-    return;
 }
 
 void GameShutDown(){
@@ -150,17 +167,4 @@ void GameShutDown(){
 
 void GameReset(){
     ResetTiles();
-}
-
-void ResizeGrid(){
-    grid.resize(ROWS);
-    for (int i = 0; i < ROWS; i++) {
-        grid[i].resize(COLS);
-    }
-
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLS; j++) {
-            grid[i][j] = {i, j, false, false, false, -1, false};
-        }
-    }
 }

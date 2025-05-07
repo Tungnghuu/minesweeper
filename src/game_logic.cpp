@@ -17,6 +17,19 @@ void ResetTiles(){
     return;
 }
 
+void ResizeGrid(){
+    grid.resize(ROWS);
+    for (int i = 0; i < ROWS; i++) {
+        grid[i].resize(COLS);
+    }
+
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            grid[i][j] = {i, j, false, false, false, -1, false};
+        }
+    }
+}
+
 void firstRevealSurround(int x, int y){
     grid[x][y].first_reveal = true;
 
@@ -32,6 +45,7 @@ void firstRevealSurround(int x, int y){
 
 void placeMine(){
     int count = 0;
+
     while (count++ < MINES) {
         int x = GetRandomValue(0, COLS - 1);
         int y = GetRandomValue(0, ROWS - 1);
@@ -51,8 +65,8 @@ void placeMine(){
 }
 
 int CountNearbyMines(int x, int y){
-
     int mineCount = 0;
+
     for (int i = 0; i < 8; i++) {
         int nx = x + dx[i];
         int ny = y + dy[i];
@@ -64,13 +78,14 @@ int CountNearbyMines(int x, int y){
 }
 
 bool isTileValid(int x, int y){
-    return x >= 0 && x < COLS && y >= 0 && y < ROWS;
+    return (x >= 0 && x < COLS && y >= 0 && y < ROWS);
 }
 
 void RevealTile(int x, int y){
     if(grid[x][y].isFlagged || grid[x][y].isRevealed) {
         if (grid[x][y].isFlagged && grid[x][y].nearbyMineCount == 0){
             grid[x][y].isFlagged = false;
+            RevealTile(x,y);
         }
         return;
     }
@@ -79,7 +94,6 @@ void RevealTile(int x, int y){
 
     if (grid[x][y].nearbyMineCount == 0){
         for (int i = 0; i < 8; i++) {
-
             int nx = x + dx[i];
             int ny = y + dy[i];
 
@@ -91,7 +105,6 @@ void RevealTile(int x, int y){
     }
 
     if(grid[x][y].isMine){
-
         for (int i = 0 ;i < COLS; i++){
             for (int j = 0; j < ROWS; j++){
                 if(grid[i][j].isMine && !grid[i][j].isFlagged){
@@ -99,7 +112,6 @@ void RevealTile(int x, int y){
                 }
                 if(grid[i][j].isFlagged && !grid[i][j].isMine){
                     grid[i][j].isFlagged = false;
-                    
                 }
             }
         }
@@ -113,7 +125,9 @@ void ToggleFlag(int x, int y){
     if (grid[x][y].isRevealed){
         return;
     }
+
     grid[x][y].isFlagged = !grid[x][y].isFlagged;
+
     return;
 }
 
@@ -130,7 +144,7 @@ bool CheckWin(){
 
 void SetDifficulty(int difficulty){
     switch (difficulty){
-        case 0: // Easy
+        case 0:                 // Easy
             SCREEN_WIDTH = 400;
             SCREEN_HEIGHT = 400;
             TILE_WIDTH = 40;
@@ -139,7 +153,7 @@ void SetDifficulty(int difficulty){
             ROWS = 10;
             MINES = 10;
             break;
-        case 1: // Medium
+        case 1:                 // Medium
             SCREEN_WIDTH = 600;
             SCREEN_HEIGHT = 600;
             TILE_WIDTH = 30;
@@ -148,7 +162,7 @@ void SetDifficulty(int difficulty){
             ROWS = 20;
             MINES = 40;
             break;
-        case 2: // Hard
+        case 2:                 // Hard
             SCREEN_WIDTH = 900;
             SCREEN_HEIGHT = 900;
             TILE_WIDTH = 30;
@@ -158,7 +172,20 @@ void SetDifficulty(int difficulty){
             MINES = 150;
             break;
     }
-
+    currentDifficulty = difficulty;
     ResizeGrid();
     GameReset(); 
+}
+
+void countFlag(){
+    int sum = 0;
+    flagCount = MINES;
+    for (int i = 0; i < COLS; i++) {
+        for (int j = 0; j < ROWS; j++) {
+            if (grid[i][j].isFlagged) {
+                sum++;
+            }
+        }
+    }
+    flagCount -= sum;
 }

@@ -4,7 +4,10 @@
 
 This is my take on the classic **Minesweeper** game and my first game project. Built using **Raylib**, it offers a clean interface and engaging gameplay.
 
-<img src="images/game_snapshot.png" alt="Game Screenshot" width="400">
+<div style="display: flex; justify-content: center; gap: 10px;">
+  <img src="images/game_snapshot.png" alt="Game Screenshot" width="400">
+  <img src="images/GameOver_snapshot.png" alt="Game Over Screenshot" width="400">
+</div>
 
 ## Table of Contents
 
@@ -102,7 +105,9 @@ You should now be able to build, run, and debug your Minesweeper game project in
 
 This project uses a Raylib starter template from [educ8s](https://github.com/educ8s/Raylib-CPP-Starter-Template-for-VSCODE).
 
-**University Project: Advanced Programming Course (Course Code: 2425II_INT2215_7) at VNU-UET**
+Color template borrowed from Minesweeper (made by Google).
+
+**University Project: Advanced Programming Course (Course Code: 2425II_INT2215_7) at UET_VNU**
 
 ## License
 

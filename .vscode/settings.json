@@ -58,6 +58,9 @@
 		"tuple": "cpp",
 		"typeinfo": "cpp",
 		"variant": "cpp",
-		"cstdarg": "cpp"
+		"cstdarg": "cpp",
+		"atomic": "cpp",
+		"memory_resource": "cpp",
+		"fstream": "cpp"
 	}
 }
