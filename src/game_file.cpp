@@ -1,4 +1,7 @@
-#include "game.h"
+#include "../include/game_file.h"
+#include "../include/game_types.h"
+#include "../include/game_render.h"
+#include "../include/game_audio.h"
 
 using namespace std;
 
@@ -14,6 +17,7 @@ void LoadImage(){
     UnloadImage(bomb);
 
 }
+
 void LoadSoundFX(){
     sound0 = LoadSound("sound/0.wav");
     sound1 = LoadSound("sound/1.wav");

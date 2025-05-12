@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include "game.h"
+#include "../include/game_.h"
 
 using std::vector;
 using std::cout;
@@ -40,8 +40,6 @@ int currentDifficulty = 0;
 int highScoreEasy = INT_MAX;
 int highScoreMedium = INT_MAX;
 int highScoreHard = INT_MAX;
-
-
 
 int main(){
     cout << "Hello World!" << '\n';

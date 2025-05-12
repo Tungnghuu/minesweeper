@@ -1,4 +1,6 @@
-#include "game.h"
+#include "../include/game_render.h"
+#include "../include/game_types.h"
+#include "../include/game_audio.h"
 
 void RenderTiles(){
     for (int i = 0; i < COLS; i++){

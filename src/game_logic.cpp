@@ -1,4 +1,6 @@
-#include "game.h"
+#include "../include/game_logic.h"
+#include "../include/game_types.h"
+#include "../include/game_audio.h"
 
 void ResetTiles(){
     for(int i = 0; i < COLS; i++){
@@ -91,7 +93,7 @@ void RevealTile(int x, int y){
         return;
     }
     grid[x][y].isRevealed = true;
-    
+
     switch(grid[x][y].nearbyMineCount){
         case 0: break;
         case 1:
