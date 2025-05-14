@@ -1,9 +1,8 @@
 #include <iostream>
 #include <vector>
-#include "../include/game_.h"
+#include "../include/game.h"
 
-using std::vector;
-using std::cout;
+using namespace std;
 
 Texture2D texture_flag;
 Texture2D texture_bomb;

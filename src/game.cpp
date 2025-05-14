@@ -1,4 +1,4 @@
-#include "../include/game_.h"
+#include "../include/game.h"
 
 void GameStartUp(){
     InitAudioDevice();

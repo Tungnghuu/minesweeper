@@ -105,7 +105,7 @@ You should now be able to build, run, and debug your Minesweeper game project in
 
 This project uses a Raylib starter template from [educ8s](https://github.com/educ8s/Raylib-CPP-Starter-Template-for-VSCODE).
 
-Color template borrowed from Minesweeper (made by Google).
+SFX, Music, Themes and Colors are borrowed from Minesweeper (made by Google).
 
 **University Project: Advanced Programming Course (Course Code: 2425II_INT2215_7) at UET_VNU**
 
