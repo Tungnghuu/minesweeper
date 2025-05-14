@@ -1,8 +1,10 @@
-#include "game.h"
+#include "../include/game_logic.h"
+#include "../include/game_types.h"
+#include "../include/game_audio.h"
 
 void ResetTiles(){
-    for (int i = 0; i < COLS; i++) {
-        for(int j = 0; j < ROWS; j++) {
+    for(int i = 0; i < COLS; i++){
+        for(int j = 0; j < ROWS; j++){
             grid[i][j] = (sTile){
                 .x = i,
                 .y = j,
@@ -14,23 +16,24 @@ void ResetTiles(){
             };
         }
     }
-    return;
+
 }
 
 void ResizeGrid(){
     grid.resize(ROWS);
-    for (int i = 0; i < ROWS; i++) {
+    
+    for(int i = 0; i < ROWS; i++){
         grid[i].resize(COLS);
     }
-
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLS; j++) {
+    for(int i = 0; i < ROWS; i++){
+        for(int j = 0; j < COLS; j++){
             grid[i][j] = {i, j, false, false, false, -1, false};
         }
     }
+
 }
 
-void firstRevealSurround(int x, int y){
+void FirstRevealSurround(int x, int y){
     grid[x][y].first_reveal = true;
 
     for (int i = 0; i < 8; i++) {
@@ -40,34 +43,34 @@ void firstRevealSurround(int x, int y){
             grid[nx][ny].first_reveal = true;
         }
     }
-    return;
+
 }
 
-void placeMine(){
+void PlaceMine(){
     int count = 0;
 
-    while (count++ < MINES) {
+    while(count++ <= MINES){
         int x = GetRandomValue(0, COLS - 1);
         int y = GetRandomValue(0, ROWS - 1);
-        if (!(grid[x][y].isMine) && !grid[x][y].first_reveal) {
+        if(!(grid[x][y].isMine) && !grid[x][y].first_reveal){
             grid[x][y].isMine = true;
         }
     }
 
-    for (int i = 0; i < COLS; i++){
+    for(int i = 0; i < COLS; i++){
         for(int j = 0; j < ROWS; j++){
-            if (!grid[i][j].isMine){
+            if(!grid[i][j].isMine){
                 grid[i][j].nearbyMineCount = CountNearbyMines(i, j);
             }
         }
     }
-    return;
+
 }
 
 int CountNearbyMines(int x, int y){
     int mineCount = 0;
 
-    for (int i = 0; i < 8; i++) {
+    for(int i = 0; i < 8; i++){
         int nx = x + dx[i];
         int ny = y + dy[i];
         if (nx >= 0 && ny >= 0 && nx < ROWS && ny < COLS && grid[nx][ny].isMine) {
@@ -89,14 +92,26 @@ void RevealTile(int x, int y){
         }
         return;
     }
-
     grid[x][y].isRevealed = true;
 
+    switch(grid[x][y].nearbyMineCount){
+        case 0: break;
+        case 1:
+            PlaySound(sound1);
+            break;
+        case 2:
+            PlaySound(sound2);
+            break;
+        default:
+            PlaySound(sound3);
+            break;
+    }
+
     if (grid[x][y].nearbyMineCount == 0){
+        PlaySound(sound0);
         for (int i = 0; i < 8; i++) {
             int nx = x + dx[i];
             int ny = y + dy[i];
-
             if (nx >= 0 && ny >= 0 && nx < COLS && ny < ROWS && !grid[nx][ny].isMine && !grid[nx][ny].isRevealed)  {
                 RevealTile(nx,ny);
             }
@@ -105,6 +120,7 @@ void RevealTile(int x, int y){
     }
 
     if(grid[x][y].isMine){
+        //play explosion
         for (int i = 0 ;i < COLS; i++){
             for (int j = 0; j < ROWS; j++){
                 if(grid[i][j].isMine && !grid[i][j].isFlagged){
@@ -115,77 +131,27 @@ void RevealTile(int x, int y){
                 }
             }
         }
-        isGameOver = true;
+        gameState = GAME_OVER;
         return;
     }
-    return;
+
 }
 
 void ToggleFlag(int x, int y){
     if (grid[x][y].isRevealed){
         return;
     }
-
     grid[x][y].isFlagged = !grid[x][y].isFlagged;
-
-    return;
+    PlaySound(soundFlag);
 }
 
 bool CheckWin(){
-    for (int i = 0; i < COLS; i++) {
-        for (int j = 0; j < ROWS; j++) {
-            if (!grid[i][j].isMine && !grid[i][j].isRevealed) {
+    for(int i = 0; i < COLS; i++){
+        for(int j = 0; j < ROWS; j++){
+            if(!grid[i][j].isMine && !grid[i][j].isRevealed){
                 return false;
             }
         }
     }
     return true;
-}
-
-void SetDifficulty(int difficulty){
-    switch (difficulty){
-        case 0:                 // Easy
-            SCREEN_WIDTH = 400;
-            SCREEN_HEIGHT = 400;
-            TILE_WIDTH = 40;
-            TILE_HEIGHT = 40;
-            COLS = 10;
-            ROWS = 10;
-            MINES = 10;
-            break;
-        case 1:                 // Medium
-            SCREEN_WIDTH = 600;
-            SCREEN_HEIGHT = 600;
-            TILE_WIDTH = 30;
-            TILE_HEIGHT = 30;
-            COLS = 20;
-            ROWS = 20;
-            MINES = 40;
-            break;
-        case 2:                 // Hard
-            SCREEN_WIDTH = 900;
-            SCREEN_HEIGHT = 900;
-            TILE_WIDTH = 30;
-            TILE_HEIGHT = 30;
-            COLS = 30;
-            ROWS = 30;
-            MINES = 150;
-            break;
-    }
-    currentDifficulty = difficulty;
-    ResizeGrid();
-    GameReset(); 
-}
-
-void countFlag(){
-    int sum = 0;
-    flagCount = MINES;
-    for (int i = 0; i < COLS; i++) {
-        for (int j = 0; j < ROWS; j++) {
-            if (grid[i][j].isFlagged) {
-                sum++;
-            }
-        }
-    }
-    flagCount -= sum;
 }
